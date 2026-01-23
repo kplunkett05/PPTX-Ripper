@@ -9,6 +9,7 @@ from pytesseract import Output
 
 def rip_slides(path, file_handle, format_type, progress_callback=None, save_images=False, use_ocr=False) -> str:
     if not os.path.exists(path):
+        print(f"Path does not exist: {path}")
         return
     
     print(f"Opening {path}...")
@@ -18,7 +19,7 @@ def rip_slides(path, file_handle, format_type, progress_callback=None, save_imag
     file_name_no_ext = os.path.splitext(filename)[0]
     file_handle.write(get_header(f"Source: {filename}", 1, format_type))
 
-    media_folder_name = f"{file_name_no_ext}_Media"
+    media_folder_name = f"{file_name_no_ext}_Images"
     media_folder = os.path.join(os.path.dirname(path), media_folder_name)
 
     if save_images:
@@ -31,7 +32,6 @@ def rip_slides(path, file_handle, format_type, progress_callback=None, save_imag
     for i, slide in enumerate(pres.slides):
         slide_number = i + 1
         print(f"Processing Slide {slide_number}...")
-
 
         file_handle.write(get_header(f"Slide {slide_number}", 2, format_type))
 
